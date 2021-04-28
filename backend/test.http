@@ -1,0 +1,12 @@
+POST http://localhost:4000/User/Ajouter
+Content-Type: application/json
+
+
+
+{
+    "Type":"Driver",
+    "FirstName":"Leo",
+    "LastName" : "messi",
+    "Email": "leomessi10@gmail.com",
+    "Password" :"leomessi123"
+}

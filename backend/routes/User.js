@@ -11,11 +11,11 @@ router.route('/ajouter').post((req, res) => {
 
     const newUser = new User ({
         Type ,
+        FirstName ,
+        LastName,
         email ,
         password ,
-        typeOfCars ,
-        FirstName ,
-        LastName
+        typeOfCars 
     });
     // promise
      newUser.save()
