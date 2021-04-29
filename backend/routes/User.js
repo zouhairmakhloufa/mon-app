@@ -2,25 +2,24 @@ const router = require("express").Router();
 let User = require("../models/User.model");
 
 router.route("/ajouter").post((req, res) => {
-  const Type = req.body.Type;
+  const type = req.body.type;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
   const email = req.body.email;
   const password = req.body.password;
   const typeOfCars = req.body.typeOfCars;
-  const FirstName = req.body.FirstName;
-  const LastName = req.body.LastName;
 
   const newUser = new User({
-    Type,
-    FirstName,
-    LastName,
+    type,
+    firstName,
+    lastName,
     email,
     password,
-    typeOfCars,
+    typeOfCars
   });
   // promise
-  newUser
-    .save()
-    .then((User) => res.json({ User: User }))
+  newUser.save()
+    .then(() => res.json("Test!!!"))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 

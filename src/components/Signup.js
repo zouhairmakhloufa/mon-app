@@ -3,23 +3,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 
 const Signup = () => {
-  const [Type, setType] = useState("");
-  const [FirstName, setFirstName] = useState("");
-  const [LastName, setLastName] = useState("");
-  const [Email, setEmail] = useState("");
-  const [Password, setPassword] = useState("");
+  const [type, setType] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const onSubmit = async (event) => {
     event.preventDefault();
     const registered = {
-      Type,
-      FirstName,
-      LastName,
-      Email,
-      Password,
+      type,
+      firstName,
+      lastName,
+      email,
+      password
     };
     const user = await axios.post(
-      "http://localhost:5000/User/Ajouter",
+      "http://localhost:5000/User/ajouter",
       registered
     );
 
@@ -39,42 +39,38 @@ const Signup = () => {
               type="text"
               placeholder="Type"
               onChange={(event) => setType(event.target.value)}
-              value={Type}
+              value={type}
               className="form-control form-group"
             />
             <input
               type="text"
               placeholder="FirstName"
               onChange={(event) => setFirstName(event.target.value)}
-              value={FirstName}
+              value={firstName}
               className="form-control form-group"
             />
             <input
               type="text"
               placeholder="LastName"
               onChange={(event) => setLastName(event.target.value)}
-              value={LastName}
+              value={lastName}
               className="form-control form-group"
             />
             <input
               type="text"
               placeholder="Email"
               onChange={(event) => setEmail(event.target.value)}
-              value={Email}
+              value={email}
               className="form-control form-group"
             />
             <input
               type="Password"
               placeholder="Password"
               onChange={(event) => setPassword(event.target.value)}
-              value={Password}
+              value={password}
               className="form-control form-group"
             />
-            <input
-              type="submit"
-              className="btn btn-danger btn-block"
-              value="Submit"
-            />
+            <input type="submit" className="btn btn-danger btn-block" value="Submit" />
           </form>
         </div>
       </div>
