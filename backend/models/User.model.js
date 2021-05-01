@@ -9,6 +9,7 @@ const userSchema = new Schema({
   email: {type: String},
   password: {type: String},
   confirmpassword:{type: String},
+  TypeOfCars:{type: String},
 
 }, {
   timestamps: true,
