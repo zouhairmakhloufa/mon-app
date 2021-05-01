@@ -11,13 +11,7 @@ const Signup = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const registered = {
-      type,
-      firstName,
-      lastName,
-      email,
-      password
-    };
+    const registered = {type, firstName, lastName, email,password };
     const user = await axios.post(
       "http://localhost:5000/User/ajouter",
       registered
@@ -58,7 +52,7 @@ const Signup = () => {
             />
             <input
               type="text"
-              placeholder="Email"
+              placeholder="E-mail"
               onChange={(event) => setEmail(event.target.value)}
               value={email}
               className="form-control form-group"

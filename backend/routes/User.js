@@ -2,20 +2,20 @@ const router = require("express").Router();
 let User = require("../models/User.model");
 
 router.route("/ajouter").post((req, res) => {
-  const type = req.body.type;
+
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const email = req.body.email;
   const password = req.body.password;
-  const typeOfCars = req.body.typeOfCars;
+  const confirmpassword = req.body.confirmpassword;
+
 
   const newUser = new User({
-    type,
     firstName,
     lastName,
     email,
     password,
-    typeOfCars
+    confirmpassword
   });
   // promise
   newUser.save()
