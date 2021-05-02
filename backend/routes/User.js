@@ -47,12 +47,16 @@ router.route("/").get(async (req, res) => {
 router.route("/login").post(async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.find({ email });
+
+    const user = await User.findOne({ email });
+    console.log(email)
+    console.log(password)
+    console.log(user)
+
     if (!user) return res.status(400).json({ error: "verify mail" });
     if (user.password !== password) {
       return res.status(400).json({ error: "verify password " });
     }
-
     const token = jwt.sign({ id: user._id }, "jwt_secret", {
       expiresIn: "24h",
     });
@@ -64,5 +68,4 @@ router.route("/login").post(async (req, res) => {
     res.status(400).json("Error: " + err);
   }
 });
-
 module.exports = router;
