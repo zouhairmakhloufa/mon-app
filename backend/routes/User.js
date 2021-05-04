@@ -35,7 +35,6 @@ router.route("/login").post(async (req, res) => {
     console.log(user)
 
     if (!user) return res.status(400).json({ error: "verify mail" });
-    
     if (user.password !== password) {
       return res.status(400).json({ error: "verify password " });
     }
