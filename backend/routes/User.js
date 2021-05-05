@@ -3,6 +3,7 @@ let User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 
 router.route("/ajouter").post((req, res) => {
+  const type = req.body.type;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const email = req.body.email;
@@ -11,6 +12,7 @@ router.route("/ajouter").post((req, res) => {
   const TypeOfCars = req.body.TypeOfCars;
 
   const newUser = new User({
+    type,
     firstName,
     lastName,
     email,
@@ -40,7 +42,6 @@ router.route("/login").post(async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, "jwt_secret", { expiresIn: "24h", });
-
     return res
       .header("authorization", `Bearer ${token}`)
       .status(200)
