@@ -10,7 +10,6 @@ const userSchema = new Schema({
   password: { type: String },
   confirmpassword: { type: String },
   TypeOfCars: { type: String },
-
 }, {
   timestamps: true,
 });

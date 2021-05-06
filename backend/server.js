@@ -21,8 +21,11 @@ connection.once('open', () => {
 })
 
 const UserRouter = require('./routes/User');
+const BookingRouter = require('./routes/Booking');
 
 app.use('/user', UserRouter);
+app.use('/booking', BookingRouter);
+
 // le serveur ecoute alors le N de port 5000 pour tt les demandes entrants 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
