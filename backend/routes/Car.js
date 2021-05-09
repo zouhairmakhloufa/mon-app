@@ -10,4 +10,17 @@ router.route("/cars").get(async (req, res) => {
   }
 });
 
+
+router.route("/cars/:id").get(async (req, res) => {
+  console.log(req.params.id);
+  Car.findById({_id: req.params.id})
+  .then(result => {
+    res.status(200).json({ Car:result })
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({ error:err })
+  })
+});
+
 module.exports = router;
