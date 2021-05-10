@@ -72,16 +72,16 @@ router.post("/sendemail", async function (req, res) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        // user: user.email,
-        user: "zouhairmakhloufa11@gmail.com",
+        user: user.email,
+        //user: "zouhairmakhloufa11@gmail.com",
         pass: "p4mzou1998nv",
       },
     });
     const mailOptions = {
-      // from: user.email,
-      from: "zouhairmakhloufa11@gmail.com",
-      // to: driver.email,
-      to: "zouhairmakhloufa22@gmail.com",
+      from: user.email,
+     // from: "zouhairmakhloufa11@gmail.com",
+      to: driver.email,
+      // to: "zouhairmakhloufa22@gmail.com",
       subject: "bonjour",
       text: "Normalment temshi",
     };
