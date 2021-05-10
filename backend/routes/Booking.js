@@ -1,5 +1,6 @@
 const router = require("express").Router();
 let Booking = require("../models/Booking.model");
+let User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 var nodemailer = require("nodemailer");
 //JSON Web Token (JWT) est un standard ouvert
@@ -17,7 +18,6 @@ function getUserToken(token) {
 }
 
 router.route("/booking").post(async (req, res) => {
-  console.log("req.body.", req.body);
   const governorateAddressSource = req.body.governorateAddressSource;
   const addresSource = req.body.addresSource;
   const governorateAddressDestination = req.body.governorateAddressDestination;
@@ -52,6 +52,7 @@ router.route("/booking").post(async (req, res) => {
       userId,
       driverId,
     });
+    res.status(200).json({ nexBooking });
 
     // 3andik id mte3 driver w id mte3 user a3ml finByed el kolwahed bch tjib mail mte3ou w ba3ed 7outoua louta
     // a£9ra tw ta3ref win tjhoutou
@@ -60,35 +61,40 @@ router.route("/booking").post(async (req, res) => {
   }
 });
 
-router.post('/sendemail', function (req, res) { 
-  console.log("req.body.", req.body);
+router.post("/sendemail", async function (req, res) {
   const driverId = req.body.driverId;
   const userId = getUserToken(req.body.token);
+
+  const user = await User.findById({ _id: userId });
+  const driver = await User.findById({ _id: driverId });
+
   try {
-    const sendEmail = await ({
-      driverId,
-      userId
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        // user: user.email,
+        user: "zouhairmakhloufa11@gmail.com",
+        pass: "p4mzou1998nv",
+      },
     });
+    const mailOptions = {
+      // from: user.email,
+      from: "zouhairmakhloufa11@gmail.com",
+      // to: driver.email,
+      to: "zouhairmakhloufa22@gmail.com",
+      subject: "bonjour",
+      text: "Normalment temshi",
+    };
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "zouhairmakhloufa11@gmail.com",
-      pass: "p4mzou1998nv",
-    },
-  });
-  const mailOptions = {
-    from: "zouhairmakhloufa11@gmail.com",
-    to: "zouhairmakhloufa22@gmail.com",
-    subject: "bonjour",
-    text: "Normalment temshi",
-  };
-
-  transporter.sendMail(mailOptions, function (err, data) {
-    if (err) { console.log('Error ' , err); } 
-    else { console.log('email send'); }
-  });
-  
-} catch (err) { res.status(400).json("Error: " + err);}
+    transporter.sendMail(mailOptions, function (err, data) {
+      if (err) {
+        console.log("Error ", err);
+      } else {
+        console.log("email send");
+      }
+    });
+  } catch (err) {
+    res.status(400).json("Error: " + err);
+  }
 });
 module.exports = router;
