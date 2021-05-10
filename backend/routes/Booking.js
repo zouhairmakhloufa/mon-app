@@ -3,6 +3,7 @@ let Booking = require("../models/Booking.model");
 let User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 var nodemailer = require("nodemailer");
+const { Profiler } = require("react");
 //JSON Web Token (JWT) est un standard ouvert
 //Il permet l'échange sécurisé de jetons (tokens) entre plusieurs parties
 //Cette sécurité de l’échange se traduit par la vérification de l’intégrité des données
@@ -92,12 +93,12 @@ router.post("/sendemail", async function (req, res) {
     });
     const mailOptions = {
       from: user.email,
-      // from: "zouhairmakhloufa11@gmail.com",
       to: driver.email,
-      // to: "zouhairmakhloufa22@gmail.com",
-      subject: "bonjour",
-      text: `taget ${addressDestination}`,
-      html: `<div></div>`,
+      subject: "zz",
+      text1: `taget ${governorateAddressSource}`, 
+      text2: `taget ${addresSource}`, 
+      html: `salut, les information de la reservation de client est la suite :
+       addrese Source ${governorateAddressSource} ${addresSource} <br> '`
     };
 
     transporter.sendMail(mailOptions, function (err, data) {
