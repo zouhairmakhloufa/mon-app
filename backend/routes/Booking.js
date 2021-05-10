@@ -64,6 +64,19 @@ router.route("/booking").post(async (req, res) => {
 router.post("/sendemail", async function (req, res) {
   const driverId = req.body.driverId;
   const userId = getUserToken(req.body.token);
+  const governorateAddressSource = req.body.governorateAddressSource;
+  const addresSource = req.body.addresSource;
+  const governorateAddressDestination = req.body.governorateAddressDestination;
+  const addressDestination = req.body.addressDestination;
+  const poids = req.body.poids;
+  const hauteur = req.body.hauteur;
+  const largeur = req.body.largeur;
+  const profondeur = req.body.profondeur;
+  const service = req.body.service;
+  const packaging = req.body.packaging;
+  const paymentMethode = req.body.paymentMethode;
+  const noteToDriver = req.body.noteToDriver;
+  const typeOfCars = req.body.typeOfCars;
 
   const user = await User.findById({ _id: userId });
   const driver = await User.findById({ _id: driverId });
@@ -79,11 +92,12 @@ router.post("/sendemail", async function (req, res) {
     });
     const mailOptions = {
       from: user.email,
-     // from: "zouhairmakhloufa11@gmail.com",
+      // from: "zouhairmakhloufa11@gmail.com",
       to: driver.email,
       // to: "zouhairmakhloufa22@gmail.com",
       subject: "bonjour",
-      text: "Normalment temshi",
+      text: `taget ${addressDestination}`,
+      html: `<div></div>`,
     };
 
     transporter.sendMail(mailOptions, function (err, data) {
