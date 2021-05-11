@@ -18,6 +18,18 @@ function getUserToken(token) {
   }
 }
 
+router.route("/booking/:id").get(async (req, res) => {
+  try {
+    const booking = await Booking.findById({ _id: req.params.id }).populate(
+      "userId"
+    );
+    res.status(200).json({ booking });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
+
 router.route("/booking").post(async (req, res) => {
   const governorateAddressSource = req.body.governorateAddressSource;
   const addresSource = req.body.addresSource;
@@ -36,7 +48,7 @@ router.route("/booking").post(async (req, res) => {
   const userId = getUserToken(req.body.token);
 
   try {
-    const nexBooking = await Booking.create({
+    const newBooking = await Booking.create({
       governorateAddressSource,
       addresSource,
       governorateAddressDestination,
@@ -52,8 +64,9 @@ router.route("/booking").post(async (req, res) => {
       noteToDriver,
       userId,
       driverId,
+      status: "en attente",
     });
-    res.status(200).json({ nexBooking });
+    res.status(200).json({ newBooking });
 
     // 3andik id mte3 driver w id mte3 user a3ml finByed el kolwahed bch tjib mail mte3ou w ba3ed 7outoua louta
     // a£9ra tw ta3ref win tjhoutou
@@ -78,6 +91,7 @@ router.post("/sendemail", async function (req, res) {
   const paymentMethode = req.body.paymentMethode;
   const noteToDriver = req.body.noteToDriver;
   const typeOfCars = req.body.typeOfCars;
+  const bookingId = req.body.bookingId;
 
   const user = await User.findById({ _id: userId });
   const driver = await User.findById({ _id: driverId });
@@ -95,18 +109,18 @@ router.post("/sendemail", async function (req, res) {
       from: user.email,
       to: driver.email,
       subject: "zz",
-      text1: `taget ${governorateAddressSource}`, 
-      text2: `taget ${addresSource}`, 
-      text3: `taget ${governorateAddressDestination}`, 
-      text4: `taget ${addressDestination}`, 
-      text5: `taget ${poids}`, 
-      text6: `taget ${hauteur}`, 
-      text7: `taget ${largeur}`, 
-      text8: `taget ${typeOfCars}`, 
-      text9: `taget ${service}`, 
-      text10: `taget ${packaging}`, 
-      text11: `taget ${paymentMethode}`, 
-      text12: `taget ${noteToDriver}`, 
+      text1: `taget ${governorateAddressSource}`,
+      text2: `taget ${addresSource}`,
+      text3: `taget ${governorateAddressDestination}`,
+      text4: `taget ${addressDestination}`,
+      text5: `taget ${poids}`,
+      text6: `taget ${hauteur}`,
+      text7: `taget ${largeur}`,
+      text8: `taget ${typeOfCars}`,
+      text9: `taget ${service}`,
+      text10: `taget ${packaging}`,
+      text11: `taget ${paymentMethode}`,
+      text12: `taget ${noteToDriver}`,
       html: `les information de mon reservation est la suite : <br> 
        addrese Source : ${governorateAddressSource} ${addresSource} <br> 
        addrese Destinataire : ${governorateAddressDestination} ${addressDestination} <br> 
@@ -118,8 +132,10 @@ router.post("/sendemail", async function (req, res) {
        service: ${service} <br> 
        packaging: ${packaging} <br> 
        paymentMethode: ${paymentMethode} <br> 
-       noteToDriver: ${noteToDriver}
-       '`
+       noteToDriver: ${noteToDriver} <br> 
+       numero: ${driver.numDeTelf} <br>
+       lien: http://localhost:3000/booking/${bookingId}
+       '`,
     };
 
     transporter.sendMail(mailOptions, function (err, data) {

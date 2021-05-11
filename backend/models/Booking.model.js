@@ -16,6 +16,7 @@ const bookingSchema = new Schema(
     packaging: { type: String },
     paymentMethode: { type: String },
     noteToDriver: { type: String },
+    status: { type: String },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
