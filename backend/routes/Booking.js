@@ -3,7 +3,6 @@ let Booking = require("../models/Booking.model");
 let User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 var nodemailer = require("nodemailer");
-const { Profiler } = require("react");
 //JSON Web Token (JWT) est un standard ouvert
 //Il permet l'échange sécurisé de jetons (tokens) entre plusieurs parties
 //Cette sécurité de l’échange se traduit par la vérification de l’intégrité des données
@@ -189,4 +188,42 @@ router.post("/sendemail", async function (req, res) {
     res.status(400).json("Error: " + err);
   }
 });
+
+router.post("/sendemailResponse", async function (req, res) {
+  const userMail = req.body.mail;
+  const isAccept = req.body.isAccept;
+  const userId = getUserToken(req.body.token);
+
+  const user = await User.findById({ _id: userId });
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: user.email,
+        //user: "zouhairmakhloufa11@gmail.com",
+        pass: "p4mzou1998nv",
+      },
+    });
+    const mailOptions = {
+      from: user.email,
+      to: userMail,
+      subject: "zz",
+      html: `trajet ${isAccept ? "accpter" : "refuser"} <br> 
+       lien: http://localhost:3000/booking/${bookingId}
+       '`,
+    };
+
+    transporter.sendMail(mailOptions, function (err, data) {
+      if (err) {
+        console.log("Error ", err);
+      } else {
+        console.log("email send");
+      }
+    });
+  } catch (err) {
+    res.status(400).json("Error: " + err);
+  }
+});
+
 module.exports = router;
