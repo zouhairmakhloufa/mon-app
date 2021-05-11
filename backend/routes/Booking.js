@@ -193,6 +193,7 @@ router.post("/sendemailResponse", async function (req, res) {
   const userMail = req.body.mail;
   const isAccept = req.body.isAccept;
   const userId = getUserToken(req.body.token);
+  const bookingId = req.body.bookingId;
 
   const user = await User.findById({ _id: userId });
 
