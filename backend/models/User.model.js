@@ -11,6 +11,7 @@ const userSchema = new Schema(
     password: { type: String },
     confirmpassword: { type: String },
     TypeOfCars: { type: String },
+    numDeTelf: { type: String },
   },
   {
     timestamps: true,

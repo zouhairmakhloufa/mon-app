@@ -12,6 +12,8 @@ router.route("/ajouter").post(async (req, res) => {
   const password = req.body.password;
   const confirmpassword = req.body.confirmpassword;
   const TypeOfCars = req.body.TypeOfCars;
+  const numDeTelf= req.body.numDeTelf;
+
   try {
     const newUser = new User({
       type,
@@ -21,6 +23,7 @@ router.route("/ajouter").post(async (req, res) => {
       password,
       confirmpassword,
       TypeOfCars,
+      numDeTelf,
     });
     const user = await newUser.save();
     if (type === "driver") {

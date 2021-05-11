@@ -97,8 +97,29 @@ router.post("/sendemail", async function (req, res) {
       subject: "zz",
       text1: `taget ${governorateAddressSource}`, 
       text2: `taget ${addresSource}`, 
-      html: `salut, les information de la reservation de client est la suite :
-       addrese Source ${governorateAddressSource} ${addresSource} <br> '`
+      text3: `taget ${governorateAddressDestination}`, 
+      text4: `taget ${addressDestination}`, 
+      text5: `taget ${poids}`, 
+      text6: `taget ${hauteur}`, 
+      text7: `taget ${largeur}`, 
+      text8: `taget ${typeOfCars}`, 
+      text9: `taget ${service}`, 
+      text10: `taget ${packaging}`, 
+      text11: `taget ${paymentMethode}`, 
+      text12: `taget ${noteToDriver}`, 
+      html: `les information de mon reservation est la suite : <br> 
+       addrese Source : ${governorateAddressSource} ${addresSource} <br> 
+       addrese Destinataire : ${governorateAddressDestination} ${addressDestination} <br> 
+       poids: ${poids} kg <br> 
+       hauteur: ${hauteur} cm <br> 
+       largeur: ${largeur} cm <br> 
+       profondeur: ${profondeur} cm <br> 
+       profondeur: ${typeOfCars} cm <br> 
+       service: ${service} <br> 
+       packaging: ${packaging} <br> 
+       paymentMethode: ${paymentMethode} <br> 
+       noteToDriver: ${noteToDriver}
+       '`
     };
 
     transporter.sendMail(mailOptions, function (err, data) {
