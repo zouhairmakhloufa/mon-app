@@ -30,6 +30,46 @@ router.route("/booking/:id").get(async (req, res) => {
   }
 });
 
+router.route("/bookingAccept/:id").put(async (req, res) => {
+  try {
+    Booking.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { status: "accepter" } },
+      (err, doc) => {
+        if (err) {
+          console.log("Something wrong when updating data!");
+        }
+
+        console.log(doc);
+      }
+    );
+
+    res.status(200).json({ message: "accepter" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
+
+router.route("/bookingRefut/:id").put(async (req, res) => {
+  try {
+    Booking.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { status: "refuser" } },
+      (err, doc) => {
+        if (err) {
+          console.log("Something wrong when updating data!");
+        }
+      }
+    );
+
+    res.status(200).json({ message: "refuser" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
+
 router.route("/booking").post(async (req, res) => {
   const governorateAddressSource = req.body.governorateAddressSource;
   const addresSource = req.body.addresSource;
