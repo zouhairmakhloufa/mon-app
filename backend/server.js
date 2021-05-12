@@ -7,10 +7,10 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
-// s'assure que le serveur peut recevoir json en tant que cprs de requete
+// s'assure que le serveur peut recevoir json en tant que coprs de requete
 app.use(express.json());
 
-// grace a mongoose, nous connectons le serveur a mongoDB
+// grace a mongoose, nous connectons le serveur a la base de donneé ( mongoDB )
 const uri = process.env.ATLAS_URI;
 mongoose.connect("mongodb://localhost:27017/logisticadb", {
   useNewUrlParser: true,

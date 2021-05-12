@@ -16,59 +16,6 @@ function getUserToken(token) {
     return null;
   }
 }
-
-router.route("/booking/:id").get(async (req, res) => {
-  try {
-    const booking = await Booking.findById({ _id: req.params.id }).populate(
-      "userId"
-    );
-    res.status(200).json({ booking });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error });
-  }
-});
-
-router.route("/bookingAccept/:id").put(async (req, res) => {
-  try {
-    Booking.findOneAndUpdate(
-      { _id: req.params.id },
-      { $set: { status: "accepter" } },
-      (err, doc) => {
-        if (err) {
-          console.log("Something wrong when updating data!");
-        }
-
-        console.log(doc);
-      }
-    );
-
-    res.status(200).json({ message: "accepter" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error });
-  }
-});
-
-router.route("/bookingRefut/:id").put(async (req, res) => {
-  try {
-    Booking.findOneAndUpdate(
-      { _id: req.params.id },
-      { $set: { status: "refuser" } },
-      (err, doc) => {
-        if (err) {
-          console.log("Something wrong when updating data!");
-        }
-      }
-    );
-
-    res.status(200).json({ message: "refuser" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error });
-  }
-});
-
 router.route("/booking").post(async (req, res) => {
   const governorateAddressSource = req.body.governorateAddressSource;
   const addresSource = req.body.addresSource;
@@ -83,6 +30,7 @@ router.route("/booking").post(async (req, res) => {
   const paymentMethode = req.body.paymentMethode;
   const noteToDriver = req.body.noteToDriver;
   const typeOfCars = req.body.typeOfCars;
+
   const driverId = req.body.driverId;
   const userId = getUserToken(req.body.token);
 
@@ -101,6 +49,8 @@ router.route("/booking").post(async (req, res) => {
       packaging,
       paymentMethode,
       noteToDriver,
+      numDeTelf,
+
       userId,
       driverId,
       status: "en attente",
@@ -113,6 +63,8 @@ router.route("/booking").post(async (req, res) => {
     res.status(400).json("Error: " + err);
   }
 });
+
+//////////////////////////// send email
 
 router.post("/sendemail", async function (req, res) {
   const driverId = req.body.driverId;
@@ -130,6 +82,8 @@ router.post("/sendemail", async function (req, res) {
   const paymentMethode = req.body.paymentMethode;
   const noteToDriver = req.body.noteToDriver;
   const typeOfCars = req.body.typeOfCars;
+  const numDeTelf = req.body.numDeTelf;
+
   const bookingId = req.body.bookingId;
 
   const user = await User.findById({ _id: userId });
@@ -147,7 +101,7 @@ router.post("/sendemail", async function (req, res) {
     const mailOptions = {
       from: user.email,
       to: driver.email,
-      subject: "zz",
+      subject: "Reservation Client",
       text1: `taget ${governorateAddressSource}`,
       text2: `taget ${addresSource}`,
       text3: `taget ${governorateAddressDestination}`,
@@ -160,6 +114,8 @@ router.post("/sendemail", async function (req, res) {
       text10: `taget ${packaging}`,
       text11: `taget ${paymentMethode}`,
       text12: `taget ${noteToDriver}`,
+      text13: `taget ${numDeTelf}`,
+
       html: `les information de mon reservation est la suite : <br> 
        addrese Source : ${governorateAddressSource} ${addresSource} <br> 
        addrese Destinataire : ${governorateAddressDestination} ${addressDestination} <br> 
@@ -167,7 +123,7 @@ router.post("/sendemail", async function (req, res) {
        hauteur: ${hauteur} cm <br> 
        largeur: ${largeur} cm <br> 
        profondeur: ${profondeur} cm <br> 
-       profondeur: ${typeOfCars} cm <br> 
+       type de cars : ${typeOfCars} cm <br> 
        service: ${service} <br> 
        packaging: ${packaging} <br> 
        paymentMethode: ${paymentMethode} <br> 
@@ -188,6 +144,8 @@ router.post("/sendemail", async function (req, res) {
     res.status(400).json("Error: " + err);
   }
 });
+
+//////////// send reponse email
 
 router.post("/sendemailResponse", async function (req, res) {
   const userMail = req.body.mail;
@@ -224,6 +182,63 @@ router.post("/sendemailResponse", async function (req, res) {
     });
   } catch (err) {
     res.status(400).json("Error: " + err);
+  }
+});
+
+////////////////////  booking/:id
+
+router.route("/booking/:id").get(async (req, res) => {
+  try {
+    const booking = await Booking.findById({ _id: req.params.id }).populate(
+      "userId"
+    );
+    res.status(200).json({ booking });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
+
+//////////////  booking Accept
+
+router.route("/bookingAccept/:id").put(async (req, res) => {
+  try {
+    Booking.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { status: "accepter" } },
+      (err, doc) => {
+        if (err) {
+          console.log("Something wrong when updating data!");
+        }
+        console.log(doc);
+      }
+    );
+
+    res.status(200).json({ message: "accepter" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
+
+//////////////  booking Reffuse
+
+router.route("/bookingReffuse/:id").put(async (req, res) => {
+  try {
+    Booking.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { status: "refuser" } },
+      (err, doc) => {
+        if (err) {
+          console.log("Something wrong when updating data!");
+        }
+      }
+    );
+
+    res.status(200).json({ message: "refuser" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
   }
 });
 
