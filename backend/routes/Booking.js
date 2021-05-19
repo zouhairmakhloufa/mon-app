@@ -53,6 +53,7 @@ router.route("/booking").post(async (req, res) => {
       driverId,
       status: "en attente",
     });
+    
     res.status(200).json({ newBooking });
 
   } catch (err) {
@@ -145,22 +146,23 @@ router.post("/sendemail", async function (req, res) {
 router.post("/sendemailResponse", async function (req, res) {
   const userMail = req.body.mail;
   const isAccept = req.body.isAccept;
-  const userId = getUserToken(req.body.token);
+  const driverId = getUserToken(req.body.token);
   const bookingId = req.body.bookingId;
+  console.log("cc",req.body)
 
-  const user = await User.findById({ _id: userId });
+  const driver = await User.findById({ _id: driverId });
 
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: user.email,
+        user: driver.email,
         //user: "zouhairmakhloufa11@gmail.com",
         pass: "p4mzou1998nv",
       },
     });
     const mailOptions = {
-      from: user.email,
+      from: driver.email,
       to: userMail,
       subject: "concerning your reservation",
    
