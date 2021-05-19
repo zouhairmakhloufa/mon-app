@@ -49,22 +49,20 @@ router.route("/booking").post(async (req, res) => {
       packaging,
       paymentMethode,
       noteToDriver,
-      numDeTelf,
-
       userId,
       driverId,
       status: "en attente",
     });
     res.status(200).json({ newBooking });
 
-    // 3andik id mte3 driver w id mte3 user a3ml finByed el kolwahed bch tjib mail mte3ou w ba3ed 7outoua louta
-    // a£9ra tw ta3ref win tjhoutou
   } catch (err) {
     res.status(400).json("Error: " + err);
   }
 });
 
-//////////////////////////// send email
+    // 3andik id mte3 driver w id mte3 user a3ml finByed el kolwahed bch tjib mail mte3ou w ba3ed 7outoua louta
+    // a£9ra tw ta3ref win tjhoutou
+
 
 router.post("/sendemail", async function (req, res) {
   const driverId = req.body.driverId;
@@ -82,7 +80,7 @@ router.post("/sendemail", async function (req, res) {
   const paymentMethode = req.body.paymentMethode;
   const noteToDriver = req.body.noteToDriver;
   const typeOfCars = req.body.typeOfCars;
-  const numDeTelf = req.body.numDeTelf;
+
 
   const bookingId = req.body.bookingId;
 
@@ -114,7 +112,6 @@ router.post("/sendemail", async function (req, res) {
       text10: `taget ${packaging}`,
       text11: `taget ${paymentMethode}`,
       text12: `taget ${noteToDriver}`,
-      text13: `taget ${numDeTelf}`,
 
       html: `les information de mon reservation est la suite : <br> 
        addrese Source : ${governorateAddressSource} ${addresSource} <br> 
@@ -128,7 +125,6 @@ router.post("/sendemail", async function (req, res) {
        packaging: ${packaging} <br> 
        paymentMethode: ${paymentMethode} <br> 
        noteToDriver: ${noteToDriver} <br> 
-       numero: ${driver.numDeTelf} <br>
        lien: http://localhost:3000/booking/${bookingId}
        '`,
     };
@@ -145,7 +141,6 @@ router.post("/sendemail", async function (req, res) {
   }
 });
 
-//////////// send reponse email
 
 router.post("/sendemailResponse", async function (req, res) {
   const userMail = req.body.mail;
@@ -167,8 +162,9 @@ router.post("/sendemailResponse", async function (req, res) {
     const mailOptions = {
       from: user.email,
       to: userMail,
-      subject: "zz",
-      html: `trajet ${isAccept ? "accpter" : "refuser"} <br> 
+      subject: "concerning your reservation",
+   
+      html: `your reservation has been ${isAccept ? "accepted" : "refused"} <br> 
        lien: http://localhost:3000/booking/${bookingId}
        '`,
     };
@@ -185,7 +181,6 @@ router.post("/sendemailResponse", async function (req, res) {
   }
 });
 
-////////////////////  booking/:id
 
 router.route("/booking/:id").get(async (req, res) => {
   try {
@@ -199,7 +194,6 @@ router.route("/booking/:id").get(async (req, res) => {
   }
 });
 
-//////////////  booking Accept
 
 router.route("/bookingAccept/:id").put(async (req, res) => {
   try {
@@ -221,7 +215,6 @@ router.route("/bookingAccept/:id").put(async (req, res) => {
   }
 });
 
-//////////////  booking Reffuse
 
 router.route("/bookingReffuse/:id").put(async (req, res) => {
   try {
