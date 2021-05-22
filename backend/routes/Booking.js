@@ -53,7 +53,7 @@ router.route("/booking").post(async (req, res) => {
       driverId,
       status: "en attente",
     });
-    
+
     res.status(200).json({ newBooking });
 
   } catch (err) {
@@ -82,9 +82,7 @@ router.post("/sendemail", async function (req, res) {
   const noteToDriver = req.body.noteToDriver;
   const typeOfCars = req.body.typeOfCars;
 
-
   const bookingId = req.body.bookingId;
-
   const user = await User.findById({ _id: userId });
   const driver = await User.findById({ _id: driverId });
 
@@ -142,28 +140,28 @@ router.post("/sendemail", async function (req, res) {
   }
 });
 
-
 router.post("/sendemailResponse", async function (req, res) {
-  const userMail = req.body.mail;
   const isAccept = req.body.isAccept;
   const driverId = getUserToken(req.body.token);
-  const bookingId = req.body.bookingId;
-  console.log("cc",req.body)
+  const userId = getUserToken(req.body.token);
 
+  const bookingId = req.body.bookingId;
   const driver = await User.findById({ _id: driverId });
+  const user = await User.findById({ _id: userId });
+  console.log("cc",req.body)
 
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: driver.email,
-        //user: "zouhairmakhloufa11@gmail.com",
+        //user: "zouhairmakhloufa22@gmail.com",
         pass: "p4mzou1998nv",
       },
     });
     const mailOptions = {
       from: driver.email,
-      to: userMail,
+      to: user.email,
       subject: "concerning your reservation",
    
       html: `your reservation has been ${isAccept ? "accepted" : "refused"} <br> 
