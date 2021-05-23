@@ -153,11 +153,12 @@ router.post("/sendemail", async function (req, res) {
 router.post("/sendemailResponse", async function (req, res) {
   const isAccept = req.body.isAccept;
   const driverId = getUserToken(req.body.token);
-  const userId = getUserToken(req.body.token);
+  const userMail = req.body.mail;
+  //const userId = getUserToken(req.body.token);
 
   const bookingId = req.body.bookingId;
   const driver = await User.findById({ _id: driverId });
-  const user = await User.findById({ _id: userId });
+  //const user = await User.findById({ _id: userId });
   console.log("cc", req.body);
 
   try {
@@ -171,7 +172,7 @@ router.post("/sendemailResponse", async function (req, res) {
     });
     const mailOptions = {
       from: driver.email,
-      to: user.email,
+      to: userMail,
       subject: "concerning your reservation",
 
       html: `your reservation has been ${
