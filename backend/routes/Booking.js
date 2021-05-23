@@ -1,6 +1,8 @@
 const router = require("express").Router();
 let Booking = require("../models/Booking.model");
 let User = require("../models/User.model");
+let Bag = require("../models/Bag.model");
+let Address = require("../models/Address.model");
 const jwt = require("jsonwebtoken");
 var nodemailer = require("nodemailer");
 //JSON Web Token (JWT) est un standard ouvert
@@ -33,17 +35,9 @@ router.route("/booking").post(async (req, res) => {
 
   const driverId = req.body.driverId;
   const userId = getUserToken(req.body.token);
-
+  console.log("typeOfCarstypeOfCarstypeOfCars", typeOfCars);
   try {
     const newBooking = await Booking.create({
-      governorateAddressSource,
-      addresSource,
-      governorateAddressDestination,
-      addressDestination,
-      poids,
-      hauteur,
-      largeur,
-      profondeur,
       carId: typeOfCars,
       service,
       packaging,
@@ -54,16 +48,32 @@ router.route("/booking").post(async (req, res) => {
       status: "en attente",
     });
 
-    res.status(200).json({ newBooking });
+    const addedBag = await Bag.create({
+      poids,
+      hauteur,
+      largeur,
+      profondeur,
+      userId,
+      bookingId: newBooking._id,
+    });
 
+    const addedAddress = await Address.create({
+      governorateAddressSource,
+      addresSource,
+      governorateAddressDestination,
+      addressDestination,
+      userId,
+      bookingId: newBooking._id,
+    });
+
+    return res.status(200).json({ newBooking, addedBag, addedAddress });
   } catch (err) {
     res.status(400).json("Error: " + err);
   }
 });
 
-    // 3andik id mte3 driver w id mte3 user a3ml finByed el kolwahed bch tjib mail mte3ou w ba3ed 7outoua louta
-    // a£9ra tw ta3ref win tjhoutou
-
+// 3andik id mte3 driver w id mte3 user a3ml finByed el kolwahed bch tjib mail mte3ou w ba3ed 7outoua louta
+// a£9ra tw ta3ref win tjhoutou
 
 router.post("/sendemail", async function (req, res) {
   const driverId = req.body.driverId;
@@ -148,7 +158,7 @@ router.post("/sendemailResponse", async function (req, res) {
   const bookingId = req.body.bookingId;
   const driver = await User.findById({ _id: driverId });
   const user = await User.findById({ _id: userId });
-  console.log("cc",req.body)
+  console.log("cc", req.body);
 
   try {
     const transporter = nodemailer.createTransport({
@@ -163,8 +173,10 @@ router.post("/sendemailResponse", async function (req, res) {
       from: driver.email,
       to: user.email,
       subject: "concerning your reservation",
-   
-      html: `your reservation has been ${isAccept ? "accepted" : "refused"} <br> 
+
+      html: `your reservation has been ${
+        isAccept ? "accepted" : "refused"
+      } <br> 
        lien: http://localhost:3000/booking/${bookingId}
        '`,
     };
@@ -181,7 +193,6 @@ router.post("/sendemailResponse", async function (req, res) {
   }
 });
 
-
 router.route("/booking/:id").get(async (req, res) => {
   try {
     const booking = await Booking.findById({ _id: req.params.id }).populate(
@@ -193,7 +204,6 @@ router.route("/booking/:id").get(async (req, res) => {
     res.status(500).json({ error: error });
   }
 });
-
 
 router.route("/bookingAccept/:id").put(async (req, res) => {
   try {
@@ -214,7 +224,6 @@ router.route("/bookingAccept/:id").put(async (req, res) => {
     res.status(500).json({ error: error });
   }
 });
-
 
 router.route("/bookingReffuse/:id").put(async (req, res) => {
   try {

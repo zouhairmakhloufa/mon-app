@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 const app = express();
-const port = process.env.PORT || 5000;
+const port = 5000;
 
 app.use(cors());
 // s'assure que le serveur peut recevoir json en tant que coprs de requete

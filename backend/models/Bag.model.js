@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const InfoBagSchema = new Schema(
+const BagSchema = new Schema(
   {
     poids: { type: String },
     hauteur: { type: String },
@@ -12,12 +12,15 @@ const InfoBagSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    bookingId: { type: String },
+    bookingId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Booking",
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const InfoBag = mongoose.model("InfoBag", InfoBagSchema);
-module.exports = InfoBag;
+const Bag = mongoose.model("Bag", BagSchema);
+module.exports = Bag;
