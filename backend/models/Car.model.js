@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const carSchema = new Schema(
   {
     name: { type: String },
+    basePrice: { type: Number },
+    klmPrice: { type: Number },
     driverId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

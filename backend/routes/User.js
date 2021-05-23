@@ -12,7 +12,9 @@ router.route("/ajouter").post(async (req, res) => {
   const password = req.body.password;
   const confirmpassword = req.body.confirmpassword;
   const TypeOfCars = req.body.TypeOfCars;
-  const numDeTelf= req.body.numDeTelf;
+  const numDeTelf = req.body.numDeTelf;
+  const basePrice = req.body.basePrice;
+  const klmPrice = req.body.klmPrice;
 
   try {
     const newUser = new User({
@@ -30,6 +32,8 @@ router.route("/ajouter").post(async (req, res) => {
       await Car.create({
         name: TypeOfCars,
         driverId: user._id,
+        basePrice,
+        klmPrice,
       });
     }
     res.status(200).json({ user });
@@ -72,15 +76,14 @@ router.route("/users").get(async (req, res) => {
 
 router.route("/users/:id").get(async (req, res) => {
   console.log(req.params.id);
-  User.findById({_id: req.params.id})
-  .then(result => {
-    res.status(200).json({ user:result })
-  })
-  .catch(err => {
-    console.log(err)
-    res.status(500).json({ error:err })
-  })
+  User.findById({ _id: req.params.id })
+    .then((result) => {
+      res.status(200).json({ user: result });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
 });
-
 
 module.exports = router;

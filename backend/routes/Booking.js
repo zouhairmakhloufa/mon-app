@@ -32,6 +32,7 @@ router.route("/booking").post(async (req, res) => {
   const paymentMethode = req.body.paymentMethode;
   const noteToDriver = req.body.noteToDriver;
   const typeOfCars = req.body.typeOfCars;
+  const total = req.body.total;
 
   const driverId = req.body.driverId;
   const userId = getUserToken(req.body.token);
@@ -45,6 +46,7 @@ router.route("/booking").post(async (req, res) => {
       noteToDriver,
       userId,
       driverId,
+      total,
       status: "en attente",
     });
 
@@ -65,6 +67,17 @@ router.route("/booking").post(async (req, res) => {
       userId,
       bookingId: newBooking._id,
     });
+
+    Booking.findOneAndUpdate(
+      { _id: newBooking._id },
+      { $set: { addressId: addedAddress._id, bagId: addedBag._id } },
+      (err, doc) => {
+        if (err) {
+          console.log("Something wrong when updating data!");
+        }
+        console.log(doc);
+      }
+    );
 
     return res.status(200).json({ newBooking, addedBag, addedAddress });
   } catch (err) {
@@ -91,6 +104,7 @@ router.post("/sendemail", async function (req, res) {
   const paymentMethode = req.body.paymentMethode;
   const noteToDriver = req.body.noteToDriver;
   const typeOfCars = req.body.typeOfCars;
+  const total = req.body.total;
 
   const bookingId = req.body.bookingId;
   const user = await User.findById({ _id: userId });
@@ -134,6 +148,7 @@ router.post("/sendemail", async function (req, res) {
        packaging: ${packaging} <br> 
        paymentMethode: ${paymentMethode} <br> 
        noteToDriver: ${noteToDriver} <br> 
+       total: ${total} dt <br> 
        lien: http://localhost:3000/booking/${bookingId}
        '`,
     };
@@ -196,10 +211,27 @@ router.post("/sendemailResponse", async function (req, res) {
 
 router.route("/booking/:id").get(async (req, res) => {
   try {
-    const booking = await Booking.findById({ _id: req.params.id }).populate(
-      "userId"
-    );
+    const booking = await Booking.findById({ _id: req.params.id })
+      .populate("addressId")
+      .populate("bagId")
+      .populate("userId");
     res.status(200).json({ booking });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
+
+router.route("/driver/booking/:driverId").get(async (req, res) => {
+  try {
+    const bookings = await Booking.find({
+      driverId: req.params.driverId,
+    })
+      .populate("addressId")
+      .populate("bagId")
+      .populate("userId");
+
+    return res.status(200).json({ bookings });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error });

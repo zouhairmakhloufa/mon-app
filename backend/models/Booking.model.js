@@ -9,9 +9,18 @@ const bookingSchema = new Schema(
     paymentMethode: { type: String },
     noteToDriver: { type: String },
     status: { type: String },
+    total: { type: String },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+    },
+    addressId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Address",
+    },
+    bagId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Bag",
     },
     driverId: {
       type: mongoose.Schema.Types.ObjectId,
