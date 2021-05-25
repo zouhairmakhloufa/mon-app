@@ -10,6 +10,8 @@ const bookingSchema = new Schema(
     noteToDriver: { type: String },
     status: { type: String },
     total: { type: String },
+    priceService: { type: String },
+    pricePackaging: { type: String },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

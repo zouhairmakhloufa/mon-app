@@ -33,6 +33,9 @@ router.route("/booking").post(async (req, res) => {
   const noteToDriver = req.body.noteToDriver;
   const typeOfCars = req.body.typeOfCars;
   const total = req.body.total;
+  const priceService = req.body.priceService;
+  const pricePackaging = req.body.pricePackaging;
+
 
   const driverId = req.body.driverId;
   const userId = getUserToken(req.body.token);
@@ -47,6 +50,8 @@ router.route("/booking").post(async (req, res) => {
       userId,
       driverId,
       total,
+      priceService,
+      pricePackaging,
       status: "en attente",
     });
 
@@ -105,6 +110,9 @@ router.post("/sendemail", async function (req, res) {
   const noteToDriver = req.body.noteToDriver;
   const typeOfCars = req.body.typeOfCars;
   const total = req.body.total;
+  const priceService = req.body.priceService; 
+  const pricePackaging = req.body.pricePackaging; 
+
 
   const bookingId = req.body.bookingId;
   const user = await User.findById({ _id: userId });
@@ -135,6 +143,10 @@ router.post("/sendemail", async function (req, res) {
       text10: `taget ${packaging}`,
       text11: `taget ${paymentMethode}`,
       text12: `taget ${noteToDriver}`,
+      text13: `taget ${total}`,
+      text14: `taget ${priceService}`,
+      text15: `taget ${pricePackaging}`,
+
 
       html: `les information de mon reservation est la suite : <br> 
        addrese Source : ${governorateAddressSource} ${addresSource} <br> 
@@ -149,6 +161,8 @@ router.post("/sendemail", async function (req, res) {
        paymentMethode: ${paymentMethode} <br> 
        noteToDriver: ${noteToDriver} <br> 
        total: ${total} dt <br> 
+       price service: ${priceService} dt <br> 
+       price packaging: ${pricePackaging} dt <br> 
        lien: http://localhost:3000/booking/${bookingId}
        '`,
     };
