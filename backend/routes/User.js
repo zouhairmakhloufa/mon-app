@@ -4,7 +4,7 @@ let Car = require("../models/Car.model");
 
 const jwt = require("jsonwebtoken");
 
-router.route("/ajouter").post(async (req, res) => {
+router.route("/signup").post(async (req, res) => {
   const type = req.body.type;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
