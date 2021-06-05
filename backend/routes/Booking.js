@@ -235,6 +235,21 @@ router.route("/booking/:id").get(async (req, res) => {
     res.status(500).json({ error: error });
   }
 });
+router.route("/userId/booking/:userId").get(async (req, res) => {
+  try {
+    const bookings = await Booking.find({
+      userId: req.params.userId,
+    })
+      .populate("addressId")
+      .populate("bagId")
+      .populate("userId");
+
+    return res.status(200).json({ bookings });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
 
 router.route("/driver/booking/:driverId").get(async (req, res) => {
   try {
