@@ -194,9 +194,9 @@ router.post("/sendemailResponse", async function (req, res) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "zouhairmakhloufa11@gmail.com",
+        user: "zouhairmakhloufa22@gmail.com",
         //user: "zouhairmakhloufa22@gmail.com",
-        pass: "p4mzou1998nv",
+        pass: "p4mzou1998",
       },
     });
     const mailOptions = {
