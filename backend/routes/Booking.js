@@ -36,7 +36,6 @@ router.route("/booking").post(async (req, res) => {
   const priceService = req.body.priceService;
   const pricePackaging = req.body.pricePackaging;
 
-
   const driverId = req.body.driverId;
   const userId = getUserToken(req.body.token);
   console.log("typeOfCarstypeOfCarstypeOfCars", typeOfCars);
@@ -110,9 +109,8 @@ router.post("/sendemail", async function (req, res) {
   const noteToDriver = req.body.noteToDriver;
   const typeOfCars = req.body.typeOfCars;
   const total = req.body.total;
-  const priceService = req.body.priceService; 
-  const pricePackaging = req.body.pricePackaging; 
-
+  const priceService = req.body.priceService;
+  const pricePackaging = req.body.pricePackaging;
 
   const bookingId = req.body.bookingId;
   const user = await User.findById({ _id: userId });
@@ -146,7 +144,6 @@ router.post("/sendemail", async function (req, res) {
       text13: `taget ${total}`,
       text14: `taget ${priceService}`,
       text15: `taget ${pricePackaging}`,
-
 
       html: `les information de mon reservation est la suite : <br> 
        addrese Source : ${governorateAddressSource} ${addresSource} <br> 
@@ -272,6 +269,26 @@ router.route("/bookingAccept/:id").put(async (req, res) => {
     Booking.findOneAndUpdate(
       { _id: req.params.id },
       { $set: { status: "accepter" } },
+      (err, doc) => {
+        if (err) {
+          console.log("Something wrong when updating data!");
+        }
+        console.log(doc);
+      }
+    );
+
+    res.status(200).json({ message: "accepter" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
+
+router.route("/bookingFini/:id").put(async (req, res) => {
+  try {
+    Booking.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { status: "terminé" } },
       (err, doc) => {
         if (err) {
           console.log("Something wrong when updating data!");
