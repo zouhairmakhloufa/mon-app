@@ -203,9 +203,7 @@ router.post("/sendemailResponse", async function (req, res) {
 
       html: `your reservation has been ${
         isAccept ? "accepted" : "refused"
-      } <br> 
-       lien: http://localhost:3000/booking/${bookingId}
-       '`,
+      } `,
     };
 
     transporter.sendMail(mailOptions, function (err, data) {
@@ -247,6 +245,21 @@ router.route("/userId/booking/:userId").get(async (req, res) => {
     res.status(500).json({ error: error });
   }
 });
+router.route("/user/booking/:userId").get(async (req, res) => {
+  try {
+    const bookings = await Booking.find({
+      userId: req.params.userId,
+    })
+      .populate("addressId")
+      .populate("bagId")
+      .populate("userId");
+
+    return res.status(200).json({ bookings });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
 
 router.route("/driver/booking/:driverId").get(async (req, res) => {
   try {
@@ -263,6 +276,7 @@ router.route("/driver/booking/:driverId").get(async (req, res) => {
     res.status(500).json({ error: error });
   }
 });
+
 
 router.route("/bookingAccept/:id").put(async (req, res) => {
   try {

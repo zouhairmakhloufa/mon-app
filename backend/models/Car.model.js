@@ -16,6 +16,5 @@ const carSchema = new Schema(
     timestamps: true,
   }
 );
-
 const User = mongoose.model("Car", carSchema);
 module.exports = User;

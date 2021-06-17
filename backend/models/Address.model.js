@@ -12,6 +12,10 @@ const AddressSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    addressId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Address",
+    },
     bookingId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Booking",
