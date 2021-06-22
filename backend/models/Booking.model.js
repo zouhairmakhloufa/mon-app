@@ -12,6 +12,7 @@ const bookingSchema = new Schema(
     total: { type: String },
     priceService: { type: String },
     pricePackaging: { type: String },
+    rate: { type: Number },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

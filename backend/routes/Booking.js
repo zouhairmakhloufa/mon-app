@@ -201,9 +201,7 @@ router.post("/sendemailResponse", async function (req, res) {
       to: userMail,
       subject: "concerning your reservation",
 
-      html: `your reservation has been ${
-        isAccept ? "accepted" : "refused"
-      } `,
+      html: `your reservation has been ${isAccept ? "accepted" : "refused"} `,
     };
 
     transporter.sendMail(mailOptions, function (err, data) {
@@ -277,7 +275,6 @@ router.route("/driver/booking/:driverId").get(async (req, res) => {
   }
 });
 
-
 router.route("/bookingAccept/:id").put(async (req, res) => {
   try {
     Booking.findOneAndUpdate(
@@ -312,6 +309,26 @@ router.route("/bookingFini/:id").put(async (req, res) => {
     );
 
     res.status(200).json({ message: "accepter" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
+
+router.route("/rating/:id").put(async (req, res) => {
+  try {
+    Booking.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { rate: req.body.rate } },
+      (err, doc) => {
+        if (err) {
+          console.log("Something wrong when updating data!");
+        }
+        console.log(doc);
+      }
+    );
+
+    res.status(200).json({ message: "ok", rate: req.body.rate });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error });
